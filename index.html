@@ -1,85 +1,83 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>圖片載入中...</title>
-<style>
-/* 這裡設定過期畫面的排版，讓它置中比較好看 */
-body {
-text-align: center;
-font-family: sans-serif;
-padding-top: 50px;
-background-color: #f4f4f4;
-}
-#message {
-font-size: 24px;
-font-weight: bold;
-color: #333;
-margin-bottom: 20px;
-}
-/* 隱藏過期圖片，等判定過期後再顯示 */
-#expired-img {
-max-width: 90%;
-width: 400px;
-display: none;
-margin: 0 auto;
-border-radius: 10px;
-box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>圖片載入中...</title>
+    <style>
+        body { 
+            text-align: center; 
+            font-family: sans-serif; 
+            padding-top: 50px; 
+            background-color: #f4f4f4;
+        }
+        #message { 
+            font-size: 22px; 
+            font-weight: bold; 
+            color: #333; 
+            margin: 20px;
+            line-height: 1.5;
+        }
+        #expired-img { 
+            max-width: 90%; 
+            width: 400px; 
+            display: none; 
+            margin: 0 auto; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
+        }
+    </style>
 </head>
 <body>
-<div id="message">網頁處理中，請稍候...</div>
+    <div id="message">系統正在處理中，請稍候...</div>
+    
+    <img id="expired-img" src="https://i.ibb.co/CKR5LxmH/IMG-7983.jpg" alt="連結已過期">
 
-<img id="expired-img" src="https://i.ibb.co/CKR5LxmH/IMG-7983.jpg" alt="連結已過期">
-<script>
-// ================= 每天更新這裡的資料 =================
-// 格式規定："年/月/日 時:分:秒" (24小時制)
-const database = {
-"day1": {
-shopee: "https://s.shopee.tw/9Kfueole9C",
-image: "<a href="https://ibb.co/bMT6PtN2"><img src="https://i.ibb.co/JwVcKZry/IMG-7980.png" alt="IMG-7980" border="0"></a>",
-expireTime: "2026/06/24 18:00:00"
-},
-"day2": {
-shopee: "https://shope.ee/你的蝦皮分潤連結2",
-image: "https://你的圖片網址2.jpg",
-expireTime: "2026/06/25 18:00:00"
-}
-};
-// =======================================================
+    <script>
+        // 為了安全起見，包在 try-catch 裡面，確保就算出錯也絕對不留白
+        try {
+            // ================= 每天更新這裡的資料 =================
+            const database = {
+                "day1": {
+                    shopee: "https://s.shopee.tw/9Kfueole9C",
+                    image: "https://i.ibb.co/JwVcKZry/IMG-7980.png",
+                    expireTime: "2026/06/25 18:00:00" // 💡 我先把時間往後調到6/25，方便你測試未過期的跳轉！
+                }
+            };
+            // =======================================================
 
-const urlParams = new URLSearchParams(window.location.search);
-const id = urlParams.get('id');
-const messageEl = document.getElementById('message');
-const expiredImgEl = document.getElementById('expired-img');
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+            const messageEl = document.getElementById('message');
+            const expiredImgEl = document.getElementById('expired-img');
 
-if (id && database[id]) {
-const currentData = database[id];
+            if (!id) {
+                messageEl.innerHTML = "❌ 偵測到網址不完整！<br>請在網址後面加上 <span style='color:red;'>?id=day1</span> 再試一次。";
+            } else if (!database[id]) {
+                messageEl.innerHTML = "❌ 找不到代號為 '" + id + "' 的設定，請檢查程式碼中的 database 區塊。";
+            } else {
+                const currentData = database[id];
+                const now = new Date(); 
+                const expireDate = new Date(currentData.expireTime); 
 
-// 取得觀眾點擊當下的時間
-const now = new Date();
-// 將你設定的過期時間轉換成程式的時間
-const expireDate = new Date(currentData.expireTime);
-
-// 核心邏輯：判斷「現在時間」是否大於「過期時間」
-if (now > expireDate) {
-// 如果過期了：更改文字，並把過期圖片顯示出來
-messageEl.innerText = "此連結已超過24小時，已經失效囉！";
-expiredImgEl.style.display = "block";
-} else {
-// 如果還沒過期：執行原本的跳轉蝦皮或圖片邏輯
-const storageKey = 'visited_' + id;
-if (!localStorage.getItem(storageKey)) {
-localStorage.setItem(storageKey, 'true');
-window.location.href = currentData.shopee;
-} else {
-window.location.href = currentData.image;
-}
-}
-} else {
-messageEl.innerText = "找不到這個連結，請確認網址是否正確。";
-}
-</script>
+                if (now > expireDate) {
+                    messageEl.innerText = "⏳ 此連結已超過24小時，已經失效囉！";
+                    expiredImgEl.style.display = "block"; 
+                } else {
+                    messageEl.innerText = "正在為您跳轉，請稍候...";
+                    const storageKey = 'visited_' + id;
+                    if (!localStorage.getItem(storageKey)) {
+                        localStorage.setItem(storageKey, 'true');
+                        window.location.href = currentData.shopee;
+                    } else {
+                        window.location.href = currentData.image;
+                    }
+                }
+            }
+        } catch (error) {
+            // 如果真的有未知錯誤，直接把錯誤原因印在畫面上，絕對不留白！
+            document.getElementById('message').innerHTML = "系統發生錯誤: " + error.message;
+        }
+    </script>
 </body>
 </html>
