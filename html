@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>圖片載入中...</title>
+<style>
+/* 這裡設定過期畫面的排版，讓它置中比較好看 */
+body {
+text-align: center;
+font-family: sans-serif;
+padding-top: 50px;
+background-color: #f4f4f4;
+}
+#message {
+font-size: 24px;
+font-weight: bold;
+color: #333;
+margin-bottom: 20px;
+}
+/* 隱藏過期圖片，等判定過期後再顯示 */
+#expired-img {
+max-width: 90%;
+width: 400px;
+display: none;
+margin: 0 auto;
+border-radius: 10px;
+box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+</head>
+<body>
+<div id="message">網頁處理中，請稍候...</div>
+
+<img id="expired-img" src="https://i.ibb.co/CKR5LxmH/IMG-7983.jpg" alt="連結已過期">
+<script>
+// ================= 每天更新這裡的資料 =================
+// 格式規定："年/月/日 時:分:秒" (24小時制)
+const database = {
+"day1": {
+shopee: "https://s.shopee.tw/9Kfueole9C",
+image: "https://i.ibb.co/JwVcKZry/IMG-7980.png",
+expireTime: "2026/06/24 18:00:00"
+},
+"day2": {
+shopee: "https://shope.ee/你的蝦皮分潤連結2",
+image: "https://你的圖片網址2.jpg",
+expireTime: "2026/06/25 18:00:00"
+}
+};
+// =======================================================
+
+const urlParams = new URLSearchParams(window.location.search);
+const id = urlParams.get('id');
+const messageEl = document.getElementById('message');
+const expiredImgEl = document.getElementById('expired-img');
+
+if (id && database[id]) {
+const currentData = database[id];
+
+// 取得觀眾點擊當下的時間
+const now = new Date();
+// 將你設定的過期時間轉換成程式的時間
+const expireDate = new Date(currentData.expireTime);
+
+// 核心邏輯：判斷「現在時間」是否大於「過期時間」
+if (now > expireDate) {
+// 如果過期了：更改文字，並把過期圖片顯示出來
+messageEl.innerText = "此連結已超過24小時，已經失效囉！";
+expiredImgEl.style.display = "block";
+} else {
+// 如果還沒過期：執行原本的跳轉蝦皮或圖片邏輯
+const storageKey = 'visited_' + id;
+if (!localStorage.getItem(storageKey)) {
+localStorage.setItem(storageKey, 'true');
+window.location.href = currentData.shopee;
+} else {
+window.location.href = currentData.image;
+}
+}
+} else {
+messageEl.innerText = "找不到這個連結，請確認網址是否正確。";
+}
+</script>
+</body>
+</html>
