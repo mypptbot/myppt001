@@ -6,62 +6,165 @@
     <title>跳轉系統</title>
     <style>
         body { font-family: sans-serif; text-align: center; margin-top: 50px; background: #f0f0f0; }
-        .box { background: white; padding: 20px; border-radius: 10px; display: inline-block; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        img { max-width: 100%; border-radius: 8px; margin-top: 15px; }
+        .box { background: white; padding: 20px; border-radius: 10px; display: inline-block; box-shadow: 0 4px 8px rgba(0,0,0,0.1); max-width: 90%; width: 450px; }
+        img { max-width: 100%; border-radius: 8px; margin-top: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
     <div class="box">
         <h2 id="status-text">系統讀取中...</h2>
-        
         <img id="expire-image" src="" style="display: none;" alt="已過期">
     </div>
 
     <script>
         try {
-            // ================= 1. 你的每日資料庫 =================
+            // ================= 1. 你的每日資料庫 (已預建 100 天格式) =================
+            // 你每天只需要修改對應日期的 shopee、photo 和 expire 即可，其餘不用動！
             const db = {
                 "day1": {
                     shopee: "https://s.shopee.tw/9Kfueole9C",
-                    photo: "https://i.ibb.co/8DNBj5dd/IMG-8002.jpg", // 你的攝影作品或圖片連結
-                    expire: "2026/06/25 19:00:00" // 測試用，設定在明天過期
-                }
-    "day2": {
+                    photo: "https://i.ibb.co/8DNBj5dd/IMG-8002.jpg",
+                    expire: "2026/06/25 19:00:00"
+                },
+                "day2": {
                     shopee: "https://s.shopee.tw/9Kfueole9C",
-                    photo: "https://i.ibb.co/FLn51xmC/IMG-8019.png", // 你的攝影作品或圖片連結
+                    photo: "https://i.ibb.co/FLn51xmC/IMG-8019.png",
                     expire: "2027/06/25 19:00:00"
+                },
+                "day3": {
+                    shopee: "https://s.shopee.tw/你的蝦皮連結3",
+                    photo: "https://你的圖片網址3",
+                    expire: "2026/06/27 19:00:00"
+                },
+                "day4": {
+                    shopee: "https://s.shopee.tw/你的蝦皮連結4",
+                    photo: "https://你的圖片網址4",
+                    expire: "2026/06/28 19:00:00"
+                },
+                "day5": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day6": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day7": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day8": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day9": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day10": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day11": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day12": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day13": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day14": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day15": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day16": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day17": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day18": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day19": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day20": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day21": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day22": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day23": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day24": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day25": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day26": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day27": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day28": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day29": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day30": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day31": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day32": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day33": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day34": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day35": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day36": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day37": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day38": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day39": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day40": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day41": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day42": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day43": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day44": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day45": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day46": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day47": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day48": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day49": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day50": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day51": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day52": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day53": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day54": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day55": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day56": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day57": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day58": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day59": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day60": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day61": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day62": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day63": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day64": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day65": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day66": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day67": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day68": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day69": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day70": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day71": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day72": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day73": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day74": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day75": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day76": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day77": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day78": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day79": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day80": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day81": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day82": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day83": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day84": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day85": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day86": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day87": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day88": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day89": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day90": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day91": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day92": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day93": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day94": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day95": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day96": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day97": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day98": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day99": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" },
+                "day100": { shopee: "", photo: "", expire: "2026/01/01 00:00:00" }
             };
             
             // 你的「已過期」提示圖片連結
             const expirePicUrl = "https://i.ibb.co/cKWN3bhb/16-20260624175826.png";
-            // =====================================================
+            // =======================================================================
 
-            // 2. 抓取網址參數與網頁元素
             const urlParams = new URLSearchParams(window.location.search);
             const id = urlParams.get('id');
             const statusBox = document.getElementById("status-text");
             const expireImgTag = document.getElementById("expire-image");
 
-            // 3. 開始執行判斷邏輯
             if (!id) {
-                statusBox.innerHTML = "⚠️ 網址缺少代號<br>請在網址最後加上 ?id=day1";
-            } else if (!db[id]) {
-                statusBox.innerHTML = "⚠️ 找不到資料<br>請檢查是否已經新增了 " + id + " 的連結";
+                statusBox.innerHTML = "⚠️ 網址缺少代號<br>請在網址最後加上 <span style='color:red;'>?id=day1</span>";
+            } else if (!db[id] || !db[id].shopee) {
+                statusBox.innerHTML = "⚠️ 找不到資料<br>請確認程式碼中是否有新增 " + id + " 的連結與資料";
             } else {
                 const data = db[id];
                 const now = new Date();
                 const expireTime = new Date(data.expire);
 
-                // 判斷是否超過 24 小時
                 if (now > expireTime) {
-                    statusBox.innerHTML = "⏳ 此連結已超過 24 小時，已經失效囉！";
+                    statusBox.innerHTML = "⏳ 此連結已超過限時，已經失效囉！";
                     expireImgTag.src = expirePicUrl;
                     expireImgTag.style.display = "block";
                 } else {
                     statusBox.innerHTML = "🔄 正在為您跳轉中...";
                     const key = "viewed_" + id;
                     
-                    // 判斷是否點擊過
                     if (!localStorage.getItem(key)) {
                         localStorage.setItem(key, "yes");
                         window.location.href = data.shopee;
@@ -71,8 +174,7 @@
                 }
             }
         } catch (err) {
-            // 萬一程式出錯，把錯誤原因印出來，不留白
-            document.getElementById("status-text").innerHTML = "❌ 發生錯誤：" + err.message;
+            document.getElementById("status-text").innerHTML = "❌ 發生系統錯誤：" + err.message;
         }
     </script>
 </body>
